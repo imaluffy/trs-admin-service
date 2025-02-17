@@ -2,9 +2,7 @@ package com.trs.trs_admin_service.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.util.Pair;
 
-import java.sql.Time;
 import java.util.List;
 
 @Entity
