@@ -27,14 +27,6 @@ public class TrainService {
         return modelMapper.map(trainRepository.save(trainEntity),TrainDTO.class);
     }
 
-    public TrainDTO getTrain(Integer trainNumber) {
-        Optional<Train> optionalTrain = trainRepository.findByTrainNumber(trainNumber);
-        if(optionalTrain.isPresent()){
-            return modelMapper.map(optionalTrain.get(), TrainDTO.class);
-        }
-        return null;
-    }
-
     public TrainDTO updateTrain(TrainDTO trainDTO) {
         if(getTrain(trainDTO.getTrainNumber())!=null) {
             return addTrain(trainDTO);
@@ -100,4 +92,15 @@ public class TrainService {
 //        }
 //        return  null;
 //    }
+    public TrainDTO getTrain(Integer trainNumber) {
+        Train resTrain = trainRepository.findByTrainNumber(trainNumber);
+        if(resTrain != null){
+            return modelMapper.map(resTrain, TrainDTO.class);
+        }
+        return null;
+    }
+
+    public void removeTrain(Integer trainNumber) {
+        trainRepository.delete(trainRepository.findByTrainNumber(trainNumber));
+    }
 }

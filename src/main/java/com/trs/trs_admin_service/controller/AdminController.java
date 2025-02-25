@@ -35,16 +35,10 @@ public class AdminController {
         }
     }
 
-
-//    @GetMapping("/findRoute/{source}/{destination}")
-//    public ResponseEntity<?> getRoute(@PathVariable String source, @PathVariable String destination) {
-//        TrainRouteDTO resp = trainRouteService.getRoute(source, destination);
-//        if(resp == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Route not found");
-//        }
-//        else{
-//            return ResponseEntity.status(HttpStatus.OK).body(resp);
-//        }
-//    }
+    @DeleteMapping("/removeTrain/{trainNumber}")
+    public ResponseEntity<?> deleteTrain(@PathVariable Integer trainNumber) {
+        trainService.removeTrain(trainNumber);
+        return ResponseEntity.ok("Train removed");
+    }
 
 }
