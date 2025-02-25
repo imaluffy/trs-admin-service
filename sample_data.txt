@@ -1,6 +1,6 @@
 {
-     "trainName":"Chetak Express",
-     "trainNumber": 12002,
+     "trainName":"Shatbdi Express",
+     "trainNumber": 12437,
      "trainSource": "Delhi",
      "trainDestination":"Mumbai",
      "trainBaseFare":250,
