@@ -43,8 +43,19 @@ public class AdminController {
     }
 
     @DeleteMapping("/removeTrainStop")
-    public ResponseEntity<?> deleteTrain(@RequestBody DeleteStopRequest deleteStopRequest) {
+    public ResponseEntity<?> deleteTrainStop(@RequestBody DeleteStopRequest deleteStopRequest) {
         List<TrainStop> resp = trainService.removeTrainStop(deleteStopRequest);
+        if(resp == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Train not found");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
+        }
+    }
+
+    @DeleteMapping("/removeTrainStoByStation")
+    public ResponseEntity<?> deleteTrainStopByStation(@RequestBody DeleteStopRequest deleteStopRequest){
+        List<TrainStop> resp = trainService.removeTrainStopByStation(deleteStopRequest);
         if(resp == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Train not found");
         }

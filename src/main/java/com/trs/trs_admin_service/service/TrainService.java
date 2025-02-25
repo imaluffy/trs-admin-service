@@ -129,4 +129,28 @@ public class TrainService {
         }
         return null;
     }
+
+    @Transactional
+    public List<TrainStop> removeTrainStopByStation(DeleteStopRequest deleteStopRequest) {
+        Optional<Train> trainEntity= trainRepository.findById(deleteStopRequest.getTrainNumber());
+
+        if(trainEntity.isPresent()){
+            List<TrainStop> listTrain = trainEntity.get().getTrainStops()
+                    .stream()
+                    .filter(trainStop -> {
+                        boolean dateOfJourneyCheck = trainStop.getDateOfJourney().toString()
+                                .equals(deleteStopRequest.getDateOfJourney().toString());
+
+                        boolean stationCheck = trainStop.getStationName()
+                                .equals(deleteStopRequest.getStationName());
+
+                        return !(dateOfJourneyCheck && stationCheck);
+                    })
+                    .toList();
+
+            trainEntity.get().setTrainStops(listTrain);
+            return trainEntity.get().getTrainStops();
+        }
+        return null;
+    }
 }
