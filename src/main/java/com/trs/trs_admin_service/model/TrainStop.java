@@ -10,6 +10,7 @@ import java.time.LocalTime;
 @Data
 @Embeddable
 public class TrainStop {
+
     LocalDate DateOfJourney;
     String stationName;
     LocalTime arrivalTime;

@@ -9,12 +9,9 @@ import java.util.List;
 @Data
 @Table(name = "trains")
 public class Train {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long trainId;
-    private String trainName;
-    @Column(unique = true)
     private Integer trainNumber;
+    private String trainName;
     private String trainSource;
     private String trainDestination;
     private Integer trainBaseFare;
