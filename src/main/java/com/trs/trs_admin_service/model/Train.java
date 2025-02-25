@@ -3,7 +3,9 @@ package com.trs.trs_admin_service.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Data
@@ -13,6 +15,7 @@ public class Train {
     @Id
     private Long trainId;
     private String trainName;
+    @Column(unique = true)
     private Integer trainNumber;
     private String trainSource;
     private String trainDestination;
@@ -22,7 +25,7 @@ public class Train {
     private String trainStatus;
 
     @ElementCollection
-    private List<TrainStop> trainStops;
+    private Map<Date,TrainStop> trainStops;
 //    private List<Pair<String, Time>> trainStops;
 //    private Time trainDepartureTime;
 //    private Time trainArrivalTime;
