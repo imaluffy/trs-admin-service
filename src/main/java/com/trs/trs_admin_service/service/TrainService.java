@@ -17,9 +17,9 @@ public class TrainService {
     @Autowired
     ModelMapper modelMapper;
 
-    public void addTrain(TrainDTO train) {
+    public TrainDTO addTrain(TrainDTO train) {
         Train trainEntity = modelMapper.map(train, Train.class);
-        trainRepository.save(trainEntity);
+        return modelMapper.map(trainRepository.save(trainEntity),TrainDTO.class);
     }
 
     public TrainDTO getTrain(Integer trainNumber) {
@@ -29,4 +29,13 @@ public class TrainService {
         }
         return null;
     }
+
+    public TrainDTO updateTrain(TrainDTO trainDTO) {
+        if(getTrain(trainDTO.getTrainNumber())!=null) {
+            return addTrain(trainDTO);
+        }
+
+        return null;
+    }
+
 }
