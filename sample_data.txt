@@ -1,6 +1,6 @@
 {
-     "trainName":"Kumana Express",
-     "trainNumber": 12845,
+     "trainName":"Tejas Express",
+     "trainNumber": 12001,
      "trainSource": "Delhi",
      "trainDestination":"Mumbai",
      "trainBaseFare":250,
