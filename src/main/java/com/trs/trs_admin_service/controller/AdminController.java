@@ -1,6 +1,7 @@
 package com.trs.trs_admin_service.controller;
 
 import com.trs.trs_admin_service.model.dto.TrainDTO;
+import com.trs.trs_admin_service.model.dto.TrainStopDTO;
 import com.trs.trs_admin_service.service.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ public class AdminController {
         trainService.addTrain(train);
         return ResponseEntity.ok("Train added successfully");
     }
+
+
 
 
     @GetMapping("/findTrain/{trainNumber}")
