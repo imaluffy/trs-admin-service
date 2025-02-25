@@ -3,9 +3,7 @@ package com.trs.trs_admin_service.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Data
@@ -19,15 +17,12 @@ public class Train {
     private Integer trainNumber;
     private String trainSource;
     private String trainDestination;
-    private int trainBaseFare;
-    private int trainCapacity;
-    private int trainBookedSeats;
+    private Integer trainBaseFare;
+    private Integer trainCapacity;
+    private Integer trainBookedSeats;
     private String trainStatus;
 
     @ElementCollection
-    private Map<Date,TrainStop> trainStops;
-//    private List<Pair<String, Time>> trainStops;
-//    private Time trainDepartureTime;
-//    private Time trainArrivalTime;
-//    private String trainType;
+    private List<TrainStop> trainStops;
+
 }

@@ -3,19 +3,20 @@ package com.trs.trs_admin_service.model;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
-import java.sql.Date;
-import java.sql.Time;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Embeddable
 public class TrainStop {
+    LocalDate DateOfJourney;
     String stationName;
-    Time arrivalTime;
+    LocalTime arrivalTime;
     Integer slFare;
     Integer acFare;
     Integer AcSeatLeftFrom;
     Integer AcSeatLeftTill;
     Integer SlSeatLeftFrom;
     Integer SlSeatLeftTill;
-//    Date DateOfJourney;
 }
