@@ -1,6 +1,6 @@
 {
-     "trainName":"Tejas Express",
-     "trainNumber": 12001,
+     "trainName":"Chetak Express",
+     "trainNumber": 12002,
      "trainSource": "Delhi",
      "trainDestination":"Mumbai",
      "trainBaseFare":250,
