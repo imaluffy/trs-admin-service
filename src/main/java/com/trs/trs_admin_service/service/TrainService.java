@@ -1,20 +1,27 @@
 package com.trs.trs_admin_service.service;
 
+import com.trs.trs_admin_service.model.DeleteStopRequest;
 import com.trs.trs_admin_service.model.Train;
 import com.trs.trs_admin_service.model.TrainStop;
 import com.trs.trs_admin_service.model.dto.TrainDTO;
 import com.trs.trs_admin_service.model.dto.TrainStopDTO;
 import com.trs.trs_admin_service.repo.TrainRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class TrainService {
     @Autowired
     TrainRepository trainRepository;
@@ -101,6 +108,29 @@ public class TrainService {
     }
 
     public void removeTrain(Integer trainNumber) {
-        trainRepository.delete(trainRepository.findByTrainNumber(trainNumber));
+        try {
+            trainRepository.deleteById(trainNumber);
+        }
+        catch (Exception ignored){
+            log.error("Unable to remove train");
+        }
+    }
+
+    @Transactional
+    public List<TrainStop> removeTrainStop(DeleteStopRequest deleteStopRequest) {
+        Optional<Train> trainEntity= trainRepository.findById(deleteStopRequest.getTrainNumber());
+
+        if(trainEntity.isPresent()) {
+            List<TrainStop> listTrain = trainEntity.get().getTrainStops()
+                    .stream()
+                    .filter(dateOfJourney -> {
+                        String s1 = dateOfJourney.getDateOfJourney().toString();
+                        String s2 = deleteStopRequest.getDateOfJourney().toString();
+                        return !s1.equals(s2);
+                    }).toList();
+            trainEntity.get().setTrainStops(listTrain);
+            return trainEntity.get().getTrainStops();
+        }
+        return null;
     }
 }
