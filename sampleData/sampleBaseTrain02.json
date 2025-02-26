@@ -1,0 +1,67 @@
+{
+  "trainNumber": 13001,
+  "trainName": "Bhagalpur Express",
+  "trainStops": [
+    {"dateOfJourney":"2020-01-01",
+      "stationName":"Delhi",
+      "arrivalTime":"09:00:00",
+      "slFare": 0,
+      "acFare" : 0,
+      "acSeatLeftFrom": 120,
+      "acSeatLeftTill": 120,
+      "slSeatLeftFrom": 180,
+      "slSeatLeftTill": 180
+    } ,
+    {"dateOfJourney":"2020-01-01",
+      "stationName":"Kanpur",
+      "slFare": 120,
+      "arrivalTime":"09:30:00",
+      "acFare" : 178,
+      "acSeatLeftFrom": 120,
+      "acSeatLeftTill": 120,
+      "slSeatLeftFrom": 180,
+      "slSeatLeftTill": 180
+    },
+    {"dateOfJourney":"2020-01-01",
+      "stationName":"Lucknow",
+      "arrivalTime":"10:00:00",
+      "slFare": 200,
+      "acFare" : 350,
+      "acSeatLeftFrom": 120,
+      "acSeatLeftTill": 120,
+      "slSeatLeftFrom": 180,
+      "slSeatLeftTill": 180
+    } ,
+    {"dateOfJourney":"2020-01-01",
+      "stationName":"Banaras",
+      "arrivalTime":"10:30:00",
+      "slFare": 500,
+      "acFare" : 850,
+      "acSeatLeftFrom": 120,
+      "acSeatLeftTill": 120,
+      "slSeatLeftFrom": 180,
+      "slSeatLeftTill": 180
+    } ,
+    {"dateOfJourney":"2020-01-01",
+      "stationName":"Patna",
+      "arrivalTime":"11:00:00",
+      "slFare": 600,
+      "acFare" : 950,
+      "acSeatLeftFrom": 120,
+      "acSeatLeftTill": 120,
+      "slSeatLeftFrom": 180,
+      "slSeatLeftTill": 180
+    } ,
+    {"dateOfJourney":"2020-01-01",
+      "stationName":"Bhagalpur",
+      "arrivalTime":"11:00:00",
+      "slFare": 600,
+      "acFare" : 950,
+      "acSeatLeftFrom": 120,
+      "acSeatLeftTill": 120,
+      "slSeatLeftFrom": 180,
+      "slSeatLeftTill": 180
+    }
+  ]
+
+}

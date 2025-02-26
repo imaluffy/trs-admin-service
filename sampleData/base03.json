@@ -1,0 +1,27 @@
+{
+  "trainNumber": 14001,
+  "trainName": "Delhi-Meerut Express",
+  "trainStops": [
+    {"dateOfJourney":"2020-01-01",
+      "stationName":"Delhi",
+      "arrivalTime":"08:00:00",
+      "slFare": 0,
+      "acFare" : 0,
+      "acSeatLeftFrom": 120,
+      "acSeatLeftTill": 120,
+      "slSeatLeftFrom": 180,
+      "slSeatLeftTill": 180
+    } ,
+    {"dateOfJourney":"2020-01-01",
+      "stationName":"Meerut",
+      "slFare": 500,
+      "arrivalTime":"09:15:00",
+      "acFare" : 900,
+      "acSeatLeftFrom": 120,
+      "acSeatLeftTill": 120,
+      "slSeatLeftFrom": 180,
+      "slSeatLeftTill": 180
+    }
+  ]
+
+}
