@@ -1,6 +1,6 @@
 package com.trs.trs_admin_service.service;
 
-import com.trs.trs_admin_service.model.DeleteStopRequest;
+import com.trs.trs_admin_service.model.RequestTemplate;
 import com.trs.trs_admin_service.model.Train;
 import com.trs.trs_admin_service.model.TrainStop;
 import com.trs.trs_admin_service.model.dto.TrainDTO;
@@ -42,7 +42,6 @@ public class TrainService {
         if(getTrain(trainDTO.getTrainNumber())!=null) {
             return addTrain(trainDTO);
         }
-
         return null;
     }
 
@@ -60,7 +59,7 @@ public class TrainService {
     }
 
     @Transactional
-    public List<TrainStop> updateStopInTrain(TrainStopDTO trainStopDTO, Integer trainNum) {
+    public List<TrainStop> updateStopInTrain1(TrainStopDTO trainStopDTO, Integer trainNum) {
         TrainStop trainStop=modelMapper.map(trainStopDTO, TrainStop.class);
         Optional<Train> trainEntity=trainRepository.findById(trainNum);
         if(trainEntity.isPresent()){
@@ -76,33 +75,34 @@ public class TrainService {
         return  null;
     }
 
-//    @Transactional
-//    public List<TrainStop> updateStopInTrain(TrainStopDTO trainStopDTO, Integer trainNum) {
-//        TrainStop trainStop=modelMapper.map(trainStopDTO, TrainStop.class);
-//        Optional<Train> trainEntity=trainRepository.findById(trainNum);
-//        if(trainEntity.isPresent()){
-//
-//            trainEntity.get().getTrainStops()
-//                    .stream()
-//                    .map(trainStopVal -> {
-//                        if (trainStopVal.getStationName().equals(trainStop.getStationName())) {
-//                            trainStopVal.setAcFare(trainStop.getAcFare());
-//                            trainStopVal.setSlFare(trainStop.getSlFare());
-//                            trainStopVal.setArrivalTime(trainStop.getArrivalTime());
-//                            trainStopVal.setDateOfJourney(trainStop.getDateOfJourney());
-//                            trainStopVal.setAcSeatLeftFrom(trainStop.getAcSeatLeftFrom());
-//                            trainStopVal.setAcSeatLeftTill(trainStop.getAcSeatLeftTill());
-//                            trainStopVal.setSlSeatLeftFrom(trainStopDTO.getSlSeatLeftFrom());
-//                            trainStopVal.setSlSeatLeftTill(trainStop.getSlSeatLeftTill());
-//                        }
-//
-//                    });
-//
-//
-//            return trainEntity.get().getTrainStops();
-//        }
-//        return  null;
-//    }
+    @Transactional
+    public List<TrainStop> updateStopInTrain(TrainStopDTO trainStopDTO, Integer trainNum) {
+        TrainStop trainStop=modelMapper.map(trainStopDTO, TrainStop.class);
+        Optional<Train> trainEntity=trainRepository.findById(trainNum);
+        if(trainEntity.isPresent()){
+
+            trainEntity.get().getTrainStops()
+                    .forEach(trainStopVal -> {
+                        if (trainStopVal.getStationName().equals(trainStop.getStationName())) {
+                            trainStopVal.setAcFare(trainStop.getAcFare());
+                            trainStopVal.setSlFare(trainStop.getSlFare());
+                            trainStopVal.setArrivalTime(trainStop.getArrivalTime());
+                            trainStopVal.setDateOfJourney(trainStop.getDateOfJourney());
+                            trainStopVal.setAcSeatLeftFrom(trainStop.getAcSeatLeftFrom());
+                            trainStopVal.setAcSeatLeftTill(trainStop.getAcSeatLeftTill());
+                            trainStopVal.setSlSeatLeftFrom(trainStopDTO.getSlSeatLeftFrom());
+                            trainStopVal.setSlSeatLeftTill(trainStop.getSlSeatLeftTill());
+                        }
+                    });
+
+//            trainEntity.get().setTrainStops(trainStopList);
+            return trainEntity.get().getTrainStops();
+        }
+        return  null;
+    }
+
+
+
 
     public void removeTrain(Integer trainNumber) {
         try {
@@ -114,15 +114,15 @@ public class TrainService {
     }
 
     @Transactional
-    public List<TrainStop> removeTrainStop(DeleteStopRequest deleteStopRequest) {
-        Optional<Train> trainEntity= trainRepository.findById(deleteStopRequest.getTrainNumber());
+    public List<TrainStop> removeTrainStop(RequestTemplate requestTemplate) {
+        Optional<Train> trainEntity= trainRepository.findById(requestTemplate.getTrainNumber());
 
         if(trainEntity.isPresent()) {
             List<TrainStop> listTrain = trainEntity.get().getTrainStops()
                     .stream()
                     .filter(dateOfJourney -> {
                         String s1 = dateOfJourney.getDateOfJourney().toString();
-                        String s2 = deleteStopRequest.getDateOfJourney().toString();
+                        String s2 = requestTemplate.getDateOfJourney().toString();
                         return !s1.equals(s2);
                     }).toList();
             trainEntity.get().setTrainStops(listTrain);
@@ -132,18 +132,18 @@ public class TrainService {
     }
 
     @Transactional
-    public List<TrainStop> removeTrainStopByStation(DeleteStopRequest deleteStopRequest) {
-        Optional<Train> trainEntity= trainRepository.findById(deleteStopRequest.getTrainNumber());
+    public List<TrainStop> removeTrainStopByStation(RequestTemplate requestTemplate) {
+        Optional<Train> trainEntity= trainRepository.findById(requestTemplate.getTrainNumber());
 
         if(trainEntity.isPresent()){
             List<TrainStop> listTrain = trainEntity.get().getTrainStops()
                     .stream()
                     .filter(trainStop -> {
                         boolean dateOfJourneyCheck = trainStop.getDateOfJourney().toString()
-                                .equals(deleteStopRequest.getDateOfJourney().toString());
+                                .equals(requestTemplate.getDateOfJourney().toString());
 
                         boolean stationCheck = trainStop.getStationName()
-                                .equals(deleteStopRequest.getStationName());
+                                .equals(requestTemplate.getStationName());
 
                         return !(dateOfJourneyCheck && stationCheck);
                     })
@@ -154,4 +154,17 @@ public class TrainService {
         }
         return null;
     }
+
+//    @Transactional
+//    public void addTrainForDate(RequestTemplate requestTemplate) {
+//
+//        List<String> trainStopList=trainRepository.findById(requestTemplate.getTrainNumber())
+//                .get().getTrainStops().stream().map(trainStop -> trainStop.getStationName()).toList();
+//
+//        List<TrainStop> trainStopList1;
+//        for(String train:trainStopList){
+//            TrainStop trainStop=new TrainStop(requestTemplate.getDateOfJourney(), requestTemplate.getStationName(), "08:30:00",50,50,120,120,120,120);
+//        }
+//
+//    }
 }
