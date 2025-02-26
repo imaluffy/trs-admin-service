@@ -11,9 +11,9 @@ public class TrainDTO {
     private Integer trainNumber;
     private String trainSource;
     private String trainDestination;
-    private int trainBaseFare;
-    private int trainCapacity;
-    private int trainBookedSeats;
+    private Integer trainBaseFare;
+    private Integer trainCapacity;
+    private Integer trainBookedSeats;
     private String trainStatus;
     private List<TrainStop> trainStops;
 }

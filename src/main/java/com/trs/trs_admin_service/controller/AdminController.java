@@ -64,8 +64,6 @@ public class AdminController {
         }
     }
 
-//    public ResponseEntity<?> addTrainForDate(@RequestBody RequestTemplate requestTemplate){
-//        trainService.addTrainForDate(requestTemplate);
-//    }
+
 
 }

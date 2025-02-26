@@ -38,11 +38,36 @@ public class TrainService {
         return null;
     }
 
+    @Transactional
     public TrainDTO updateTrain(TrainDTO trainDTO) {
-        if(getTrain(trainDTO.getTrainNumber())!=null) {
-            return addTrain(trainDTO);
+
+        Train updatedTrain=modelMapper.map(trainDTO, Train.class);
+        Optional<Train> existingTrain=trainRepository.findById(trainDTO.getTrainNumber());
+
+        if(existingTrain.isPresent()){
+            existingTrain.get().setTrainName(updatedTrain.getTrainName() != null ? updatedTrain.getTrainName() : existingTrain.get().getTrainName());
+            existingTrain.get().setTrainSource(updatedTrain.getTrainSource() != null ? updatedTrain.getTrainSource() : existingTrain.get().getTrainSource());
+            existingTrain.get().setTrainDestination(updatedTrain.getTrainDestination() != null ? updatedTrain.getTrainDestination() : existingTrain.get().getTrainDestination());
+
+//            if (updatedTrain.getTrainBaseFare() != null) {
+//                existingTrain.get().setTrainBaseFare(updatedTrain.getTrainBaseFare());
+//            }
+
+            existingTrain.get().setTrainBaseFare(updatedTrain.getTrainBaseFare() != null ? updatedTrain.getTrainBaseFare() : existingTrain.get().getTrainBaseFare());
+            existingTrain.get().setTrainCapacity(updatedTrain.getTrainCapacity() != null ? updatedTrain.getTrainCapacity() : existingTrain.get().getTrainCapacity());
+            existingTrain.get().setTrainBookedSeats(updatedTrain.getTrainBookedSeats() != null ? updatedTrain.getTrainBookedSeats() : existingTrain.get().getTrainBookedSeats());
+            existingTrain.get().setTrainStatus(updatedTrain.getTrainStatus() != null ? updatedTrain.getTrainStatus() : existingTrain.get().getTrainStatus());
+
+            if (updatedTrain.getTrainStops() != null && !updatedTrain.getTrainStops().isEmpty()) {
+                existingTrain.get().setTrainStops(updatedTrain.getTrainStops());
+            }
         }
-        return null;
+
+        return modelMapper.map(existingTrain,TrainDTO.class);
+
+
+
+
     }
 
     @Transactional
