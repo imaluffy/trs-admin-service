@@ -38,18 +38,23 @@ public class AdminController {
 
     @DeleteMapping("/removeTrain/{trainNumber}")
     public ResponseEntity<?> deleteTrain(@PathVariable Integer trainNumber) {
-        trainService.removeTrain(trainNumber);
-        return ResponseEntity.status(HttpStatus.OK).body("Train removed");
+        Integer respCode = trainService.removeTrain(trainNumber);
+        if(respCode == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Train - " + trainNumber +" not found");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK).body("Train removed - " + trainNumber);
+        }
     }
 
     @DeleteMapping("/removeTrainStop")
     public ResponseEntity<?> deleteTrainStop(@RequestBody RequestTemplate requestTemplate) {
-        List<TrainStop> resp = trainService.removeTrainStop(requestTemplate);
-        if(resp == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Train not found");
+        Boolean resp = trainService.removeTrainStop(requestTemplate);
+        if(resp) {
+            return ResponseEntity.status(HttpStatus.OK).body("Train records removed for the date - " + requestTemplate.getDateOfJourney());
         }
         else{
-            return ResponseEntity.status(HttpStatus.OK).body(resp);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Requested train not found - " + requestTemplate.getTrainNumber());
         }
     }
 
