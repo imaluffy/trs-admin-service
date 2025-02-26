@@ -3,8 +3,6 @@ package com.trs.trs_admin_service.controller;
 import com.trs.trs_admin_service.model.RequestTemplate;
 import com.trs.trs_admin_service.model.TrainStop;
 import com.trs.trs_admin_service.model.TrainStopBase;
-import com.trs.trs_admin_service.model.dto.TrainStopDTO;
-import com.trs.trs_admin_service.repo.BaseTrainRepository;
 import com.trs.trs_admin_service.service.BaseTrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +23,8 @@ public class BaseDataController {
     @PostMapping("/addBaseTrain")
     ResponseEntity<?> createTrainStop(@RequestBody TrainStopBase trainStopBase){
         baseTrainService.addBaseTrain(trainStopBase);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Base Train Created Successfully");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(String.format("Base Train: %s Created Successfully", trainStopBase.getTrainName()));
     }
 
     @PostMapping("/newDayTrainSchedule")

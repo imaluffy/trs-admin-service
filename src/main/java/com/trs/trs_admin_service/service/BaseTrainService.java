@@ -8,9 +8,10 @@ import com.trs.trs_admin_service.repo.BaseTrainRepository;
 import com.trs.trs_admin_service.repo.TrainRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,9 @@ public class BaseTrainService {
 
     @Autowired
     TrainRepository trainRepository;
+
+    @Autowired
+    TrainService trainService;
 
 
     public void addBaseTrain(TrainStopBase trainStopBase) {
@@ -60,5 +64,16 @@ public class BaseTrainService {
       return null;
     }
 
+    @Scheduled(cron = "0 0 * * *")
+    public void scheduledTrainStopRemover(){
+        LocalDate date_to_remove = LocalDate.now().minusDays(1);
+
+        baseTrainRepository.findAll().forEach(
+                baseTrains ->{
+                    RequestTemplate deleteStopRequest = new RequestTemplate(baseTrains.getTrainNumber(), date_to_remove, null);
+                    trainService.removeTrainStop(deleteStopRequest);
+                }
+        );
+    }
 
 }
