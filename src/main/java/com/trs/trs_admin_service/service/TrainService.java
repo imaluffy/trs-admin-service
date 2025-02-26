@@ -122,17 +122,18 @@ public class TrainService {
 
 
 
-    public void removeTrain(Integer trainNumber) {
-        try {
+    public Integer removeTrain(Integer trainNumber) {
+        if(trainRepository.existsById(trainNumber)){
             trainRepository.deleteById(trainNumber);
+            return 1;
         }
-        catch (Exception ignored){
-            log.error("Unable to remove train");
+        else{
+            return 0;
         }
     }
 
     @Transactional
-    public List<TrainStop> removeTrainStop(RequestTemplate requestTemplate) {
+    public Boolean removeTrainStop(RequestTemplate requestTemplate) {
         Optional<Train> trainEntity= trainRepository.findById(requestTemplate.getTrainNumber());
 
         if(trainEntity.isPresent()) {
@@ -144,9 +145,9 @@ public class TrainService {
                         return !s1.equals(s2);
                     }).toList();
             trainEntity.get().setTrainStops(listTrain);
-            return trainEntity.get().getTrainStops();
+            return true;
         }
-        return null;
+        return false;
     }
 
     @Transactional
