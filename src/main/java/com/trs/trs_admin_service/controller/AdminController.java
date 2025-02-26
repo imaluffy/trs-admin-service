@@ -58,7 +58,7 @@ public class AdminController {
         }
     }
 
-    @DeleteMapping("/removeTrainStoByStation")
+    @DeleteMapping("/removeTrainStopByStation")
     public ResponseEntity<?> deleteTrainStopByStation(@RequestBody RequestTemplate requestTemplate){
         List<TrainStop> resp = trainService.removeTrainStopByStation(requestTemplate);
         if(resp == null) {
