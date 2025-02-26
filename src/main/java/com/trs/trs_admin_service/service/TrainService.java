@@ -38,11 +38,28 @@ public class TrainService {
         return null;
     }
 
+    @Transactional
     public TrainDTO updateTrain(TrainDTO trainDTO) {
-        if(getTrain(trainDTO.getTrainNumber())!=null) {
-            return addTrain(trainDTO);
+
+        Train updatedTrain=modelMapper.map(trainDTO, Train.class);
+        Optional<Train> existingTrain=trainRepository.findById(trainDTO.getTrainNumber());
+
+        if(existingTrain.isPresent()){
+            existingTrain.get().setTrainName(updatedTrain.getTrainName() != null ? updatedTrain.getTrainName() : existingTrain.get().getTrainName());
+            existingTrain.get().setTrainSource(updatedTrain.getTrainSource() != null ? updatedTrain.getTrainSource() : existingTrain.get().getTrainSource());
+            existingTrain.get().setTrainDestination(updatedTrain.getTrainDestination() != null ? updatedTrain.getTrainDestination() : existingTrain.get().getTrainDestination());
+            existingTrain.get().setSlCoachesNum(updatedTrain.getSlCoachesNum() != null ? updatedTrain.getSlCoachesNum() : existingTrain.get().getSlCoachesNum());
+            existingTrain.get().setAcCoachesNum(updatedTrain.getAcCoachesNum() != null ? updatedTrain.getAcCoachesNum() : existingTrain.get().getAcCoachesNum());
+            existingTrain.get().setTrainBaseFare(updatedTrain.getTrainBaseFare() != null ? updatedTrain.getTrainBaseFare() : existingTrain.get().getTrainBaseFare());
+            existingTrain.get().setTrainStatus(updatedTrain.getTrainStatus() != null ? updatedTrain.getTrainStatus() : existingTrain.get().getTrainStatus());
+
+            if (updatedTrain.getTrainStops() != null && !updatedTrain.getTrainStops().isEmpty()) {
+                existingTrain.get().setTrainStops(updatedTrain.getTrainStops());
+            }
         }
-        return null;
+
+        return modelMapper.map(existingTrain,TrainDTO.class);
+
     }
 
     @Transactional
@@ -84,18 +101,19 @@ public class TrainService {
             trainEntity.get().getTrainStops()
                     .forEach(trainStopVal -> {
                         if (trainStopVal.getStationName().equals(trainStop.getStationName())) {
-                            trainStopVal.setAcFare(trainStop.getAcFare());
-                            trainStopVal.setSlFare(trainStop.getSlFare());
-                            trainStopVal.setArrivalTime(trainStop.getArrivalTime());
-                            trainStopVal.setDateOfJourney(trainStop.getDateOfJourney());
-                            trainStopVal.setAcSeatLeftFrom(trainStop.getAcSeatLeftFrom());
-                            trainStopVal.setAcSeatLeftTill(trainStop.getAcSeatLeftTill());
-                            trainStopVal.setSlSeatLeftFrom(trainStopDTO.getSlSeatLeftFrom());
-                            trainStopVal.setSlSeatLeftTill(trainStop.getSlSeatLeftTill());
+                            trainStopVal.setAcFare(Optional.ofNullable(trainStop.getAcFare()).orElse(trainStopVal.getAcFare()));
+                            trainStopVal.setSlFare(Optional.ofNullable(trainStop.getSlFare()).orElse(trainStopVal.getSlFare()));
+                            trainStopVal.setDistanceFromSourceInKms(Optional.ofNullable(trainStop.getDistanceFromSourceInKms()).orElse(trainStopVal.getDistanceFromSourceInKms()));
+                            trainStopVal.setArrivalTime(Optional.ofNullable(trainStop.getArrivalTime()).orElse(trainStopVal.getArrivalTime()));
+                            trainStopVal.setDepartureTime(Optional.ofNullable(trainStop.getDepartureTime()).orElse(trainStopVal.getDepartureTime()));
+                            trainStopVal.setAcSeatLeftFrom(Optional.ofNullable(trainStop.getAcSeatLeftFrom()).orElse(trainStopVal.getAcSeatLeftFrom()));
+                            trainStopVal.setAcSeatLeftTill(Optional.ofNullable(trainStop.getAcSeatLeftTill()).orElse(trainStopVal.getAcSeatLeftTill()));
+                            trainStopVal.setSlSeatLeftFrom(Optional.ofNullable(trainStop.getSlSeatLeftFrom()).orElse(trainStopVal.getSlSeatLeftFrom()));
+                            trainStopVal.setSlSeatLeftTill(Optional.ofNullable(trainStop.getSlSeatLeftTill()).orElse(trainStopVal.getSlSeatLeftTill()));
+
                         }
                     });
 
-//            trainEntity.get().setTrainStops(trainStopList);
             return trainEntity.get().getTrainStops();
         }
         return  null;
@@ -155,16 +173,5 @@ public class TrainService {
         return null;
     }
 
-//    @Transactional
-//    public void addTrainForDate(RequestTemplate requestTemplate) {
-//
-//        List<String> trainStopList=trainRepository.findById(requestTemplate.getTrainNumber())
-//                .get().getTrainStops().stream().map(trainStop -> trainStop.getStationName()).toList();
-//
-//        List<TrainStop> trainStopList1;
-//        for(String train:trainStopList){
-//            TrainStop trainStop=new TrainStop(requestTemplate.getDateOfJourney(), requestTemplate.getStationName(), "08:30:00",50,50,120,120,120,120);
-//        }
-//
-//    }
+
 }

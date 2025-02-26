@@ -33,11 +33,20 @@ public class BaseTrainService {
     }
 
     @Transactional
-    public List<TrainStop> addTrainStopsByDate(RequestTemplate requestTemplate){
+    public Integer addTrainStopsByDate(RequestTemplate requestTemplate){
         Optional<TrainStopBase> trainStopBase =  baseTrainRepository.findById(requestTemplate.getTrainNumber());
         Optional<Train> trainEntity= trainRepository.findById(requestTemplate.getTrainNumber());
 
+
+
         if(trainStopBase.isPresent()) {
+
+            if(trainEntity.isPresent()){
+                boolean exists= trainEntity.get().getTrainStops().stream().anyMatch(stop->stop.getDateOfJourney().equals(requestTemplate.getDateOfJourney()));
+                if(exists)
+                    return -1;
+            }
+
             List<TrainStop> trainStopList = trainStopBase.get().getTrainStops()
                     .stream()
                     .map(trainStop -> {
@@ -51,18 +60,20 @@ public class BaseTrainService {
                         newStop.setSlSeatLeftTill(trainStop.getSlSeatLeftTill());
                         newStop.setAcSeatLeftTill(trainStop.getAcSeatLeftTill());
                         newStop.setAcSeatLeftFrom(trainStop.getAcSeatLeftFrom());
+                        newStop.setDepartureTime(trainStop.getDepartureTime());
+                        newStop.setDistanceFromSourceInKms(trainStop.getDistanceFromSourceInKms());
                         return newStop;
                     })
                     .toList();
 
             if(trainEntity.isPresent()) {
                 trainEntity.get().getTrainStops().addAll(trainStopList);
-                return trainEntity.get().getTrainStops();
+                return 1;
             }
 
         }
 
-      return null;
+      return 0;
     }
 
     @Scheduled(cron = "0 0 * * *")

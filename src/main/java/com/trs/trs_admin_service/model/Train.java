@@ -15,11 +15,15 @@ public class Train {
     private String trainSource;
     private String trainDestination;
     private Integer trainBaseFare;
-    private Integer trainCapacity;
-    private Integer trainBookedSeats;
-    private String trainStatus;
+    private Integer slCoachesNum;
+    private Integer acCoachesNum;
+    private Status trainStatus;
 
     @ElementCollection
     private List<TrainStop> trainStops;
+
+    public enum Status{
+        RUNNING, DELAYED, CANCELLED
+    }
 
 }

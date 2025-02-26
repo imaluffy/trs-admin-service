@@ -29,10 +29,12 @@ public class BaseDataController {
 
     @PostMapping("/newDayTrainSchedule")
     ResponseEntity<?> addTrainStopsByDate(@RequestBody RequestTemplate requestTemplate){
-        List<TrainStop> trainStopList= baseTrainService.addTrainStopsByDate(requestTemplate);
-        if(trainStopList!=null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(trainStopList);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Requested train does not exist - " + requestTemplate.getTrainNumber());
+        Integer responseCode= baseTrainService.addTrainStopsByDate(requestTemplate);
+        if(responseCode==-1){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Data already present for date - " + requestTemplate.getDateOfJourney());
+        }else if(responseCode==1)
+            return ResponseEntity.status(HttpStatus.CREATED).body("Added data successfully for date - " + requestTemplate.getDateOfJourney());
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Requested train does not exist - " + requestTemplate.getTrainNumber());
     }
 }

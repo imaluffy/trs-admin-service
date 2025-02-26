@@ -15,9 +15,11 @@ public class TrainStop {
 
     LocalDate DateOfJourney;
     String stationName;
+    Integer distanceFromSourceInKms;
     LocalTime arrivalTime;
-    Integer slFare;
-    Integer acFare;
+    LocalTime departureTime;
+    Double slFare;
+    Double acFare;
     Integer AcSeatLeftFrom;
     Integer AcSeatLeftTill;
     Integer SlSeatLeftFrom;
