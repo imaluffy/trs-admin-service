@@ -1,5 +1,6 @@
 package com.trs.trs_admin_service.model.dto;
 
+import com.trs.trs_admin_service.model.Train;
 import com.trs.trs_admin_service.model.TrainStop;
 import lombok.Data;
 
@@ -12,8 +13,14 @@ public class TrainDTO {
     private String trainSource;
     private String trainDestination;
     private Integer trainBaseFare;
-    private Integer trainCapacity;
-    private Integer trainBookedSeats;
-    private String trainStatus;
+    private Integer slCoachesNum;
+    private Integer acCoachesNum;
+    private Status trainStatus;
+
     private List<TrainStop> trainStops;
+
+
+    public enum Status{
+        RUNNING, DELAYED, CANCELLED
+    }
 }
