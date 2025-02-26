@@ -4,6 +4,7 @@ import com.trs.trs_admin_service.model.RequestTemplate;
 import com.trs.trs_admin_service.model.Train;
 import com.trs.trs_admin_service.model.TrainStop;
 import com.trs.trs_admin_service.model.TrainStopBase;
+import com.trs.trs_admin_service.model.dto.TrainStopDTO;
 import com.trs.trs_admin_service.repo.BaseTrainRepository;
 import com.trs.trs_admin_service.repo.TrainRepository;
 import jakarta.transaction.Transactional;
@@ -65,15 +66,25 @@ public class BaseTrainService {
     }
 
     @Scheduled(cron = "0 0 * * *")
-    public void scheduledTrainStopRemover(){
+    public void scheduledTrainStopRemove(){
         LocalDate date_to_remove = LocalDate.now().minusDays(1);
 
         baseTrainRepository.findAll().forEach(
                 baseTrains ->{
-                    RequestTemplate deleteStopRequest = new RequestTemplate(baseTrains.getTrainNumber(), date_to_remove, null);
-                    trainService.removeTrainStop(deleteStopRequest);
+                    RequestTemplate requestTemplate = new RequestTemplate(baseTrains.getTrainNumber(), date_to_remove, null);
+                    trainService.removeTrainStop(requestTemplate);
                 }
         );
     }
 
+    @Scheduled(cron = "0 10 * * *")
+    public void scheduledTrainStopAdd(){
+        LocalDate date_to_add = LocalDate.now().plusDays(7);
+        baseTrainRepository.findAll().forEach(
+                baseTrains ->{
+                    RequestTemplate requestTemplate = new RequestTemplate(baseTrains.getTrainNumber(), date_to_add, null);
+                    addTrainStopsByDate(requestTemplate);
+                }
+        );
+    }
 }
