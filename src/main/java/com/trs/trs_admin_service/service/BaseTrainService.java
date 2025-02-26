@@ -37,8 +37,6 @@ public class BaseTrainService {
         Optional<TrainStopBase> trainStopBase =  baseTrainRepository.findById(requestTemplate.getTrainNumber());
         Optional<Train> trainEntity= trainRepository.findById(requestTemplate.getTrainNumber());
 
-
-
         if(trainStopBase.isPresent()) {
 
             if(trainEntity.isPresent()){
@@ -76,7 +74,8 @@ public class BaseTrainService {
       return 0;
     }
 
-    @Scheduled(cron = "0 0 * * *")
+    @Scheduled(cron = "0 1 0 * * *", zone = "Asia/Kolkata")
+    @Transactional
     public void scheduledTrainStopRemove(){
         LocalDate date_to_remove = LocalDate.now().minusDays(1);
 
@@ -88,8 +87,10 @@ public class BaseTrainService {
         );
     }
 
-    @Scheduled(cron = "0 10 * * *")
+    @Scheduled(cron = "0 10 0 * * *",zone = "Asia/Kolkata")
+    @Transactional
     public void scheduledTrainStopAdd(){
+        System.out.println("We are inside schedule and running");
         LocalDate date_to_add = LocalDate.now().plusDays(7);
         baseTrainRepository.findAll().forEach(
                 baseTrains ->{
