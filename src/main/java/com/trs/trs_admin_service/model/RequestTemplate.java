@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class DeleteStopRequest {
+public class RequestTemplate {
     Integer trainNumber;
     LocalDate DateOfJourney;
     String stationName;

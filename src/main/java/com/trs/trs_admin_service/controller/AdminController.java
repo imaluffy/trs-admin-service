@@ -1,6 +1,6 @@
 package com.trs.trs_admin_service.controller;
 
-import com.trs.trs_admin_service.model.DeleteStopRequest;
+import com.trs.trs_admin_service.model.RequestTemplate;
 import com.trs.trs_admin_service.model.TrainStop;
 import com.trs.trs_admin_service.model.dto.TrainDTO;
 import com.trs.trs_admin_service.service.TrainService;
@@ -43,8 +43,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/removeTrainStop")
-    public ResponseEntity<?> deleteTrainStop(@RequestBody DeleteStopRequest deleteStopRequest) {
-        List<TrainStop> resp = trainService.removeTrainStop(deleteStopRequest);
+    public ResponseEntity<?> deleteTrainStop(@RequestBody RequestTemplate requestTemplate) {
+        List<TrainStop> resp = trainService.removeTrainStop(requestTemplate);
         if(resp == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Train not found");
         }
@@ -54,8 +54,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/removeTrainStoByStation")
-    public ResponseEntity<?> deleteTrainStopByStation(@RequestBody DeleteStopRequest deleteStopRequest){
-        List<TrainStop> resp = trainService.removeTrainStopByStation(deleteStopRequest);
+    public ResponseEntity<?> deleteTrainStopByStation(@RequestBody RequestTemplate requestTemplate){
+        List<TrainStop> resp = trainService.removeTrainStopByStation(requestTemplate);
         if(resp == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Train not found");
         }
@@ -63,5 +63,9 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.OK).body(resp);
         }
     }
+
+//    public ResponseEntity<?> addTrainForDate(@RequestBody RequestTemplate requestTemplate){
+//        trainService.addTrainForDate(requestTemplate);
+//    }
 
 }
